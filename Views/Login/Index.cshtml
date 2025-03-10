@@ -2,6 +2,28 @@
     ViewData["Title"] = "Login";
 }
 
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+else if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
