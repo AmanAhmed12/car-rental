@@ -3,6 +3,7 @@ using carRentalProject.Models;
 using MySqlConnector;
 using System.Data;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 
 namespace carRentalProject.Controllers
 {
@@ -34,6 +35,9 @@ namespace carRentalProject.Controllers
             {
                 try
                 {
+
+                    var passwordHasher = new PasswordHasher<Registration>();
+                    var hashedPassword = passwordHasher.HashPassword(registration, registration.Password);
                     // SQL query to insert registration data
                     string query = "INSERT INTO registration (first_name, last_name, email, pwd, acc_type, pickup_Location, rental_time, is_renting_car) " +
                                    "VALUES (@FirstName, @LastName, @Email, @Password, @AccountType, @PickupLocation, @RentalTime, @LookingForCar)";
@@ -47,7 +51,7 @@ namespace carRentalProject.Controllers
                         cmd.Parameters.AddWithValue("@FirstName", registration.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", registration.LastName);
                         cmd.Parameters.AddWithValue("@Email", registration.Email);
-                        cmd.Parameters.AddWithValue("@Password", registration.Password); // You should hash the password in a real application
+                        cmd.Parameters.AddWithValue("@Password", hashedPassword); // You should hash the password in a real application
                         cmd.Parameters.AddWithValue("@AccountType", registration.AccountType);
                         cmd.Parameters.AddWithValue("@PickupLocation", registration.PickupLocation);
                         cmd.Parameters.AddWithValue("@RentalTime", registration.RentalTime);

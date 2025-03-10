@@ -4,11 +4,11 @@ using carRentalProject.Models;
 
 namespace carRentalProject.Controllers;
 
-public class HomeController : Controller
+public class GuestDashboardController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<GuestDashboardController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public GuestDashboardController(ILogger<GuestDashboardController> logger)
     {
         _logger = logger;
     }
@@ -18,7 +18,7 @@ public class HomeController : Controller
         return View();
     }
 
- 
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

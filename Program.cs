@@ -2,6 +2,15 @@ using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add session services
+builder.Services.AddDistributedMemoryCache(); // Stores session in memory
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 // Register MySQL connection
 builder.Services.AddSingleton<MySqlConnection>(sp =>
 {
@@ -16,6 +25,9 @@ builder.Services.AddSingleton<MySqlConnection>(sp =>
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Enable session
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
