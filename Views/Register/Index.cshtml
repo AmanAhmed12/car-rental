@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CarRentalApp</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" />
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="~/css/register.css" />
+</head>
+
+<body class="bg-light mb-10">
+
+    <div class="container d-flex justify-content-center align-items-center vh-85 mt-3 mb-5">
+        <div class="row w-100">
+            <div class="col-md-6 mx-auto shadow-lg rounded-4 p-5 bg-white">
+                <h3 class="text-center text-primary mb-2"><i class="fas fa-car"></i> Car Rental Registration</h3>
+                <form method="post" asp-action="Register">
+                    @if (ViewData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger">@ViewData["ErrorMessage"]</div>
+                    }
+
+                    <div class="form-group mb-1">
+                        <label for="FirstName">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="LastName">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="LastName" name="LastName" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="Email">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="Email" name="Email" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="Password">Password <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="Password" name="Password" required />
+                    </div>
+
+
+                    <div class="form-group mb-1">
+                        <label for="AccountType">Account Type <span class="text-danger">*</span></label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="AccountType" id="AccountTypeMember" value="Member" required />
+                            <label class="form-check-label" for="AccountTypeMember">Member</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="AccountType" id="AccountTypeGuest" value="Guest" required />
+                            <label class="form-check-label" for="AccountTypeGuest">Guest</label>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group mb-1">
+                        <label for="PickupLocation">Pickup Location <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="PickupLocation" name="PickupLocation" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="RentalTime">Rental Time <span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" id="RentalTime" name="RentalTime" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="LookingForCar">Are you looking for a car or renting a car?</label><br />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="LookingForCar" id="LookingForCarYes" value="true" />
+                            <label class="form-check-label" for="LookingForCarYes">Looking for a car</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="LookingForCar" id="LookingForCarNo" value="false" />
+                            <label class="form-check-label" for="LookingForCarNo">Renting a car</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg w-75">Register</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-2">
+                    <p>Already have an account? <a href="@Url.Action("Index", "Login")">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
