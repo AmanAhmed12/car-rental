@@ -1,6 +1,11 @@
 ﻿@{
-    ViewData["Title"] = "Guest_Dashboard";
-    Layout = null; // This means no layout will be applied to this view.
+    ViewData["Title"] = "Member Dashboard";
+    Layout = null;
+}
+@model List<Cars>
+
+@{
+    var carsList = Model ?? new List<Cars>();
 }
 
 <!DOCTYPE html>
@@ -11,125 +16,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-    <!-- External CSS for styles -->
+    <!-- External CSS -->
     <link rel="stylesheet" href="~/css/guestDashboard.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+        }
+
+            .sidebar a {
+                padding: 10px 15px;
+                text-decoration: none;
+                font-size: 18px;
+                color: #f8f9fa;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    background-color: #575d63;
+                }
+
+            .sidebar .closebtn {
+                position: absolute;
+                top: 10px;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+        .sidebar-btn {
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            color: #343a40;
+        }
+
+        .content {
+            margin-left: 15px;
+            transition: margin-left .3s;
+        }
+    </style>
 </head>
 
 <body>
-
     <!-- Sidebar -->
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="#">Home</a>
+        <a href="#featuredSection">Available Cars</a>
         <a href="#searchSection">Search Cars</a>
         <a href="#inquirySection">Submit Inquiry</a>
-        <a href="#featuredSection">Featured Cars</a>
-        <a href="">Logout</a>
+        <a href="@Url.Action("Logout", "Login")">Logout</a>
     </div>
 
-    <!-- Open Sidebar Button (for small screens) -->
+    <!-- Open Sidebar Button -->
     <span class="sidebar-btn" onclick="toggleNav()">&#9776;</span>
 
     <div class="content">
-
-        <!-- Hero Section -->
-        <div class="hero-section text-center">
-            <h1>Welcome to the Member Dashboard</h1>
+        <div class="container text-center mt-4">
+            <h1 class="memberDashHead">Welcome to the Member Dashboard</h1>
             <p>Explore cars, submit inquiries, and find the perfect car for your needs!</p>
         </div>
 
-        <!-- Search Cars Section -->
-        <div id="searchSection" class="container full-height">
-            <div class="row">
-                <div class="col-md-12 col-lg-6 dashboard-card">
-                    <div class="card shadow-sm">
-                        <div class="card-header">
-                            <h4 class="mb-0">Search for a Car</h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="/Cars/Search" method="get">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="location" placeholder="Enter location" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="carType" placeholder="Enter car type (SUV, Sedan, etc.)" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="number" class="form-control" name="rentalDuration" placeholder="Rental Duration (Days)" />
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">Search Cars</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Submit Inquiry Section -->
-        <div id="inquirySection" class="container full-height mt-5">
-            <div class="row">
-                <div class="col-md-12 col-lg-6 dashboard-card">
-                    <div class="card shadow-sm">
-                        <div class="card-header">
-                            <h4 class="mb-0">Submit an Inquiry</h4>
-                        </div>
-                        <div class="card-body">
-                            <form action="/Inquiry/Submit" method="post" class="inquiry-form">
-                                <div class="form-group">
-                                    <label for="inquiryText" class="section-title">Your Inquiry</label>
-                                    <textarea class="form-control" id="inquiryText" name="inquiryText" placeholder="Ask us anything about cars or services"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-block">Submit Inquiry</button>
-                            </form>
-                        </div>
-                        <div class="card-footer text-center">
-                            <small>We’ll get back to you as soon as possible!</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Featured Cars Section -->
-        <div id="featuredSection" class="container full-height mt-5">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2 class="section-title">Featured Cars</h2>
-                </div>
-                <div class="col-md-4 dashboard-card">
-                    <div class="card shadow-sm">
-                        <img src="car-image.jpg" class="card-img-top" alt="Car Image">
-                        <div class="card-body">
-                            <h5 class="card-title">Luxury Sedan</h5>
-                            <p class="card-text">A comfortable and luxurious car with the latest features.</p>
-                            <p class="card-text"><strong>Price: $150/day</strong></p>
-                            <a href="/Cars/CarDetails/1" class="btn btn-primary">View Details</a>
+        <div id="featuredSection" class="container mt-5">
+            <h2 class="text-center">Available Cars</h2>
+            <div class="row g-3">
+                @foreach (var car in carsList)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card shadow-sm">
+                            <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
+                            <div class="card-body">
+                                <h5 class="card-title">@car.type</h5>
+                                <p class="card-text">@car.model</p>
+                                <p><strong>Color: @car.color</strong></p>
+                                <p><strong>Location: @car.location</strong></p>
+                                <a href="/Car/CarDetails/@car.Id" class="btn btn-primary">View Details</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Repeat similar card for other cars -->
+                }
+            </div>
+        </div>
+
+        <!-- Search Section -->
+        <div id="searchSection" class="container mt-5">
+            <div class="card shadow-sm p-4">
+                <h4>Search for a Car</h4>
+                <form action="/Cars/Search" method="get">
+                    <input type="text" class="form-control mb-2" name="location" placeholder="Enter location">
+                    <input type="text" class="form-control mb-2" name="carType" placeholder="Enter car type">
+                    <input type="number" class="form-control mb-2" name="rentalDuration" placeholder="Rental Duration (Days)">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Inquiry Section -->
+        <div id="inquirySection" class="container mt-5">
+            <div class="card shadow-sm p-4">
+                <h4>Submit an Inquiry</h4>
+                <form action="/Inquiry/Submit" method="post">
+                    <textarea class="form-control mb-2" name="inquiryText" placeholder="Ask us anything about cars or services"></textarea>
+                    <button type="submit" class="btn btn-primary w-100">Submit Inquiry</button>
+                </form>
+                <small class="text-muted text-center">We’ll get back to you as soon as possible!</small>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS and Dependencies -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Sidebar Toggle JS -->
     <script>
         function toggleNav() {
             var sidebar = document.getElementById("mySidebar");
             if (sidebar.style.width === "250px") {
-                sidebar.style.width = "0"; // Close the sidebar
+                sidebar.style.width = "0";
+                document.querySelector(".content").style.marginLeft = "15px";
             } else {
-                sidebar.style.width = "250px"; // Open the sidebar
+                sidebar.style.width = "250px";
+                document.querySelector(".content").style.marginLeft = "265px";
             }
         }
     </script>
-
 </body>
 
 </html>

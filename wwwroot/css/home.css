@@ -105,7 +105,7 @@ header {
     width: 250px;
     height:200px;
     text-align: center;
-    background-image: url('/images//car1.jpg'); /* Replace with the path to your image */
+    background-image: url('/images/car1.jpg'); /* Replace with the path to your image */
     background-size: cover; /* Adjusts the image size to cover the entire card */
     background-position: center; /* Centers the background image */
 }

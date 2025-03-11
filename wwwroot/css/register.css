@@ -61,3 +61,29 @@ input[type="text"], input[type="email"], input[type="password"], input[type="dat
 .form-check-inline {
     margin-right: 15px;
 }
+.register-button {
+    display: inline-block;
+    padding: 15px 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+    text-decoration: none;
+    border-radius: 10px; /* Rounded corners */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    width: 180px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+    .register-button:hover {
+        color: black;
+        background: linear-gradient(45deg, #ff512f, #dd2476); /* Darker gradient on hover */
+        transform: translateY(-3px); /* Slight lift effect */
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+    }
+
+.registerHead {
+    color: orangered;
+}
