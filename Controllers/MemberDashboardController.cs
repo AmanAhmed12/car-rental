@@ -19,6 +19,15 @@ namespace carRentalProject.Controllers
         // GET: MemberDashboard/Index
         public IActionResult Index(string location, string carType)
         {
+
+            // Assuming the acs_type is stored in session
+            var acsType = HttpContext.Session.GetString("AccountType");
+
+            if (acsType == "admin")
+            {
+                return RedirectToAction("Index", "AdminDashboard");
+            }
+          
             List<Cars> cars = new List<Cars>();
             List<Cars> searchResult = new List<Cars>();
 
@@ -26,7 +35,7 @@ namespace carRentalProject.Controllers
             {
                 // Fetch all cars (Available Cars)
                 _connection.Open();
-                string query = "SELECT id, type, model, color, imageUrl, location FROM cars";
+                string query = "SELECT id, type, model, color, imageUrl, location FROM cars WHERE is_booked=0";
                 using (var cmd = new MySqlCommand(query, _connection))
                 using (var reader = cmd.ExecuteReader())
                 {

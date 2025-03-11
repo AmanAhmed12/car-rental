@@ -67,7 +67,7 @@ namespace carRentalProject.Controllers
                         cmd.Parameters.AddWithValue("@LastName", registration.LastName);
                         cmd.Parameters.AddWithValue("@Email", registration.Email);
                         cmd.Parameters.AddWithValue("@Password", hashedPassword);
-                        cmd.Parameters.AddWithValue("@AccountType", registration.AccountType);
+                        cmd.Parameters.AddWithValue("@AccountType", "Member");
                         cmd.Parameters.AddWithValue("@PickupLocation", registration.PickupLocation);
                         cmd.Parameters.AddWithValue("@RentalTime", registration.RentalTime);
                         cmd.Parameters.AddWithValue("@LookingForCar", registration.LookingForCar);

@@ -5,12 +5,12 @@ using System.Diagnostics;
 
 namespace carRentalProject.Controllers
 {
-    public class GuestDashboardController : Controller
+    public class AdminDashboardController : Controller
     {
-        private readonly ILogger<GuestDashboardController> _logger;
+        private readonly ILogger<AdminDashboardController> _logger;
         private readonly MySqlConnection _connection;
 
-        public GuestDashboardController(ILogger<GuestDashboardController> logger, MySqlConnection connection)
+        public AdminDashboardController(ILogger<AdminDashboardController> logger, MySqlConnection connection)
         {
             _logger = logger;
             _connection = connection;
@@ -23,7 +23,7 @@ namespace carRentalProject.Controllers
             try
             {
                 _connection.Open();
-                string query = "SELECT id, type,imageUrl FROM cars WHERE is_booked = 0"; // Retrieve all cars (no grouping)
+                string query = "SELECT id, type,imageUrl,is_booked FROM cars "; // Retrieve all cars (no grouping)
                 using (var cmd = new MySqlCommand(query, _connection))
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -33,7 +33,8 @@ namespace carRentalProject.Controllers
                         {
                             Id = reader.GetInt32("id"),
                             type = reader.GetString("type"),
-                            ImageUrl = reader.GetString("imageUrl")
+                            ImageUrl = reader.GetString("imageUrl"),
+                            is_booked= reader.GetInt32(reader.GetOrdinal("is_booked"))
                         });
                     }
                 }
@@ -51,5 +52,7 @@ namespace carRentalProject.Controllers
             ViewBag.CarTypes = cars; // Use ViewBag instead of ViewData
             return View(cars);
         }
+
+
     }
 }

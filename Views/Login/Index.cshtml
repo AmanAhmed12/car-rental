@@ -24,11 +24,39 @@
 
     <!-- Custom Styles for Login -->
     <link rel="stylesheet" href="~/css/login.css" />
+    <style>
+        .guest-login-button {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            color: white;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            padding: 10px 20px;
+            width: 100%;
+            font-size: 13px;
+           font-weight:bolder;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .guest-login-button:hover {
+                background: linear-gradient(45deg, #ff512f, #dd2476); /* Darker gradient on hover */
+               
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+            }
+
+            .guest-login-button:focus {
+                outline: none;
+            }
+
+            .guest-login-button:active {
+                background-color: #004085;
+            }
+    </style>
 </head>
 <body class="bg-light">
 
     <!-- Login Form Section -->
-    <div class="d-flex justify-content-center align-items-center mt-5 vh-85">
+    <div class="d-flex justify-content-center align-items-center mt-4 vh-85">
         <div class="card shadow-lg p-4" style="width: 400px;">
             <div class="card-body">
                 <h3 class="text-center mb-4">Login</h3>
@@ -64,6 +92,10 @@
                     </div>
                     <button type="submit" class="login-button w-100">Login</button>
                 </form>
+
+                <a href="@Url.Action("Index", "GuestDashboard")">
+                    <button class="guest-login-button mt-3">Login as Guest</button>
+                </a>
 
                 <div class="text-center mt-3">
                     <p>Don't have an account? <a href="@Url.Action("Index", "Register")">Sign Up</a></p>

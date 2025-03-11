@@ -1,0 +1,124 @@
+﻿@{
+    ViewData["Title"] = "Car_Booking";
+    Layout = null;
+}
+
+@{
+    var successMessage = TempData["SuccessMessage"] as string ?? "";
+    var errorMessage = TempData["ErrorMessage"] as string ?? "";
+}
+
+@{
+    ViewData["Title"] = "Car Booking";
+    var carTypes = ViewBag.CarTypes as List<Cars>;
+}
+
+@model Cars
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Car Rental</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/carBooking.css">
+</head>
+
+<body class="bg-light mb-10">
+    <div class="container d-flex justify-content-center align-items-center vh-100 mt-4 mb-5">
+        <div class="row w-100">
+            <div class="col-md-6 mx-auto shadow-lg rounded-4 p-5 bg-white">
+                <h3 class="text-center mb-3"><i class="fas fa-car"></i> Car Booking</h3>
+
+                @if (carTypes == null || !carTypes.Any())
+                {
+                    <div class="alert alert-warning" role="alert">
+                        No Bookings Available
+                    </div>
+                }
+                else
+                {
+                    <form method="post" asp-action="BookCar">
+                        @if (!string.IsNullOrEmpty(successMessage))
+                        {
+                            <div class="alert alert-success" role="alert">
+                                @successMessage
+                            </div>
+                        }
+                        else if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            <div class="alert alert-danger" role="alert">
+                                @errorMessage
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label for="Name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="Name" name="Name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Address" class="form-label">Address <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="Address" name="Address" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="TelID" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="TelID" name="TelID" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="FromDate" class="form-label">From Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="FromDate" name="FromDate" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ToDate" class="form-label">To Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="ToDate" name="ToDate" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Car Type <span class="text-danger">*</span></label>
+                            <select class="form-select" id="CarType" name="carTypeId" required>
+                                <option value="">Select Car Type</option>
+                                @foreach (var car in carTypes)
+                                {
+                                    <option value="@car.Id">@car.type</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3 text-center">
+                            <button type="submit" class="btn btn-primary w-75">Book Now</button>
+                        </div>
+                    </form>
+                }
+
+                <div class="text-center mt-2">
+                    <p><a href="@Url.Action("Index", "MemberDashboard")">Back to Dashboard</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut("slow");
+            }, 5000); // 5 seconds
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Guest Dashboard";
+    ViewData["Title"] = "Admin Dashboard";
     Layout = null;
 }
 @model List<Cars>
@@ -106,7 +106,7 @@
         <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="#">Home</a>
         <a href="#featuredSection">Available Cars</a>
-        @* <a href="#searchSection">Search Cars</a> *@
+        <a href="#searchSection">Search Cars</a>
         <a href="#inquirySection">Submit Inquiry</a>
         <a href="@Url.Action("Logout", "Login")">Logout</a>
     </div>
@@ -116,40 +116,40 @@
 
     <div class="content">
         <div class="container text-center mt-4">
-            <h1 class="memberDashHead">Welcome to the Guest Dashboard</h1>
+            <h1 class="memberDashHead">Welcome to the Admin Dashboard</h1>
             <p>Explore cars, submit inquiries, and find the perfect car for your needs!</p>
         </div>
 
         <!-- Featured Cars Section -->
         <div id="featuredSection" class="container mt-5">
             <h2 class="text-center">Available Cars</h2>
+            <div class="row g-3">
+                @foreach (var car in carsList)
+                {
+                    <div class="col-md-4 col-sm-6">
+                        <div class="card shadow-sm">
+                            <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
+                            <div class="card-body">
+                                <p><strong>Type: @car.type</strong></p>
+                                <p><strong>Model: @car.model</strong></p>
+                                <p><strong>Color: @car.color</strong></p>
+                                <p><strong>Location: @car.location</strong></p>
+                                <p><strong>Status: @(car.is_booked == 1 ? "Booked" : "Available")</strong></p>
+                                @if (car.is_booked == 1)
+                                {
+                                    <a href="@Url.Action("Return", "CarBooking", new { carId = car.Id })" class="link-btn">Return</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Index", "CarBooking", new { carId = car.Id })" class="link-btn">Book Now</a>
+                                }
 
-            @if (carsList != null && carsList.Any())
-            {
-                <div class="row g-3">
-                    @foreach (var car in carsList)
-                    {
-                        <div class="col-md-4 col-sm-6">
-                            <div class="card shadow-sm">
-                                <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
-                                <div class="card-body">
-                                    <p><strong>Type: @car.type</strong></p>
-                                    <p><strong>Model: @car.model</strong></p>
-                                    <p><strong>Color: @car.color</strong></p>
-                                    <p><strong>Location: @car.location</strong></p>
-                                    @* <a href="@Url.Action("Index", "CarBooking")" class="link-btn">Book Now</a> *@
-                                </div>
                             </div>
                         </div>
-                    }
-                </div>
-            }
-            else
-            {
-                <p class="text-center">No available cars at the moment.</p>
-            }
+                    </div>
+                }
+            </div>
         </div>
-
 
         @* <!-- Search Section --> *@
         @* <div id="searchSection" class="container mt-5"> *@

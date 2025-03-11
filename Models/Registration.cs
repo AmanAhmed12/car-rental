@@ -6,7 +6,7 @@ namespace carRentalProject.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string AccountType { get; set; }
+       
         public string PickupLocation { get; set; }
         public DateTime RentalTime { get; set; }
         public bool LookingForCar { get; set; }

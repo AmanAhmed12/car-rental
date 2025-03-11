@@ -9,5 +9,7 @@ namespace carRentalProject.Models
         public string ImageUrl { get; set; }
 
         public string location { get; set; }
+
+        public int is_booked { get; set; }
     }
 }

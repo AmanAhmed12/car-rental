@@ -35,7 +35,7 @@ namespace carRentalProject.Controllers
             try
             {
                 _connection.Open();
-                string query = "SELECT pwd, acc_type FROM registration WHERE email = @Email";
+                string query = "SELECT id,pwd, acc_type FROM registration WHERE email = @Email";
 
                 using (var cmd = new MySqlCommand(query, _connection))
                 {
@@ -44,24 +44,27 @@ namespace carRentalProject.Controllers
                     {
                         if (reader.Read())
                         {
+
                             string hashedPassword = reader["pwd"].ToString();
                             string accountType = reader["acc_type"].ToString().ToLower(); // Normalize case
+                            int userId = Convert.ToInt32(reader["id"]); // Get the user ID
 
                             var passwordHasher = new PasswordHasher<string>();
                             var result = passwordHasher.VerifyHashedPassword(Email, hashedPassword, Password);
 
                             if (result == PasswordVerificationResult.Success)
                             {
-                                TempData["SuccessMessage"] = "Login successful!";
 
+                                HttpContext.Session.SetInt32("UserId", userId);
+                                HttpContext.Session.SetString("AccountType", accountType);
                                 // Redirect based on account type
                                 if (accountType == "member")
                                 {
                                     return RedirectToAction("Index", "MemberDashboard");
                                 }
-                                else if (accountType == "guest")
+                                else if (accountType == "admin")
                                 {
-                                    return RedirectToAction("Index", "GuestDashboard");
+                                    return RedirectToAction("Index", "AdminDashboard");
                                 }
                                 else
                                 {
