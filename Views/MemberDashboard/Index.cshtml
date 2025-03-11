@@ -6,6 +6,7 @@
 
 @{
     var carsList = Model ?? new List<Cars>();
+    var searchResult = ViewData["SearchResult"] as List<Cars> ?? new List<Cars>();
 }
 
 <!DOCTYPE html>
@@ -42,7 +43,7 @@
             .sidebar a {
                 padding: 10px 15px;
                 text-decoration: none;
-                font-size: 18px;
+                font-size: 15px;
                 color: #f8f9fa;
                 display: block;
                 transition: 0.3s;
@@ -73,6 +74,29 @@
             margin-left: 15px;
             transition: margin-left .3s;
         }
+
+        .link-btn {
+            display: inline-block;
+            padding: 15px 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            text-decoration: none;
+            border-radius: 10px; /* Rounded corners */
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            // width: 180px;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+            .link-btn:hover {
+                color: black;
+                background: linear-gradient(45deg, #ff512f, #dd2476); /* Darker gradient on hover */
+                transform: translateY(-3px); /* Slight lift effect */
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+            }
     </style>
 </head>
 
@@ -106,11 +130,11 @@
                         <div class="card shadow-sm">
                             <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
                             <div class="card-body">
-                                <h5 class="card-title">@car.type</h5>
-                                <p class="card-text">@car.model</p>
+                                <p><strong>Type: @car.type</strong></p>
+                                <p><strong>Model: @car.model</strong></p>
                                 <p><strong>Color: @car.color</strong></p>
                                 <p><strong>Location: @car.location</strong></p>
-                                <a href="/Car/CarDetails/@car.Id" class="btn btn-primary">View Details</a>
+                                <a href="/Car/CarDetails/@car.Id" class="link-btn" >View Details</a>
                             </div>
                         </div>
                     </div>
@@ -122,22 +146,54 @@
         <div id="searchSection" class="container mt-5">
             <div class="card shadow-sm p-4">
                 <h4>Search for a Car</h4>
-                <form action="/Cars/Search" method="get">
+                <form action="@Url.Action("Index", "MemberDashboard")" method="get">
                     <input type="text" class="form-control mb-2" name="location" placeholder="Enter location">
                     <input type="text" class="form-control mb-2" name="carType" placeholder="Enter car type">
-                    <input type="number" class="form-control mb-2" name="rentalDuration" placeholder="Rental Duration (Days)">
-                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                    <button type="submit" class="link-btn w-100">Search</button>
                 </form>
-            </div>
-        </div>
 
+                <!-- Display Search Results -->
+                @if (searchResult.Any())
+                {
+                    <div class="mt-5">
+                        <h3>Search Results</h3>
+                        <div class="row g-3">
+                            @foreach (var car in searchResult)
+                            {
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="card shadow-sm">
+                                        <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
+                                        <div class="card-body">
+                                            <p><strong>Type: @car.type</strong></p>
+                                            <p><strong>Model: @car.model</strong></p>
+                                            <p><strong>Color: @car.color</strong></p>
+                                            <p><strong>Location: @car.location</strong></p>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-5">
+                        <h5>No cars found matching your search criteria.</h5>
+                    </div>
+                }
+            </div>
+
+            </div>
+
+        
         <!-- Inquiry Section -->
         <div id="inquirySection" class="container mt-5">
             <div class="card shadow-sm p-4">
                 <h4>Submit an Inquiry</h4>
                 <form action="/Inquiry/Submit" method="post">
                     <textarea class="form-control mb-2" name="inquiryText" placeholder="Ask us anything about cars or services"></textarea>
-                    <button type="submit" class="btn btn-primary w-100">Submit Inquiry</button>
+                    <button type="submit" class="link-btn w-100">Submit Inquiry</button>
                 </form>
                 <small class="text-muted text-center">We’ll get back to you as soon as possible!</small>
             </div>

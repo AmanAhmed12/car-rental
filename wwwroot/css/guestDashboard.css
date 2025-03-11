@@ -1,5 +1,5 @@
 ﻿/* Sidebar Styles */
-.sidebar {
+/*.sidebar {
     height: 100%;
     width: 0;
     position: fixed;
@@ -23,7 +23,7 @@
 
 .sidebar a:hover {
     color: #f1f1f1;
-}
+}*/
 
 .sidebar .closebtn {
     position: absolute;
