@@ -11,5 +11,10 @@ namespace carRentalProject.Models
         public string location { get; set; }
 
         public int is_booked { get; set; }
+        // Constructor to set default values
+        public Cars()
+        {
+            ImageUrl = "images/car.jpg"; // Setting default value for ImageUrl
+        }
     }
 }

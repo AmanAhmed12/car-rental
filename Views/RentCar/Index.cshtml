@@ -1,0 +1,173 @@
+﻿@{
+    ViewData["Title"] = "RentCar";
+    var successMessage = TempData["SuccessMessage"] as string ?? "";
+    var errorMessage = TempData["ErrorMessage"] as string ?? "";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Car Rental</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 120px;
+        }
+
+        h3 {
+            color: black;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            width: 85vw;
+          
+            margin-bottom: 2%;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .btn-submit:hover {
+                background: linear-gradient(45deg, #ff512f, #dd2476);
+                color: black;
+                transform: translateY(-3px);
+            }
+
+        .rent-head {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .reviewHead {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            width: 100%;
+        }
+
+        .btn-back {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            border: none;
+            padding: 3px 8px;
+            margin: 10px;
+            font-size: 0.8rem;
+            font-weight: bolder;
+        }
+
+            .btn-back:hover {
+                background: linear-gradient(45deg, #ff512f, #dd2476);
+            }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="reviewHead d-flex justify-content-between align-items-center">
+        <!-- Back to Home Button (left corner) -->
+        <a href="@Url.Action("Index", "MemberDashboard")" class="btn btn-back">Dashboard</a>
+
+        <!-- Review Header (centered) -->
+        <h1 class="mx-auto">Rent A Car</h1>
+    </div>
+   
+    <div class="container">
+        <div class="form-container">
+          
+            <form asp-action="CarRent" method="post" enctype="multipart/form-data">
+                @if (!string.IsNullOrEmpty(successMessage))
+                {
+                    <div class="alert alert-success" role="alert">
+                        @successMessage
+                    </div>
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @errorMessage
+                    </div>
+                }
+
+                <div class="mb-3">
+                    <label for="CarType" class="form-label">Car Type <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="CarType" name="type" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="model" class="form-label">Model <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="model" name="model" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="color" class="form-label">Color <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="color" name="color" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="location" name="location" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label">Upload Car Image</label>
+                    <input type="file" class="form-control" id="imageFile" name="imageUrl" accept="image/*">
+                </div>
+
+               
+                <button type="submit" class="btn btn-submit w-100">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut("slow");
+            }, 5000); // 5 seconds
+        });
+    </script>
+</body>
+</html>
