@@ -3,8 +3,8 @@
 }
 
 @{
-    var successMessage = TempData["SuccessMessage"] as string;
-    var errorMessage = TempData["ErrorMessage"] as string;
+    var successMessage = TempData["SuccessMessage"] as string ?? "";
+    var errorMessage = TempData["ErrorMessage"] as string ?? "";
 }
 
 
