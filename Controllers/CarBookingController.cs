@@ -157,5 +157,8 @@ namespace carRentalProject.Controllers
 
             return RedirectToAction("Index","AdminDashboard"); // Redirect back to the Index action to show updated car list
         }
+
+
+      
     }
 }
