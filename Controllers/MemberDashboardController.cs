@@ -30,6 +30,7 @@ namespace carRentalProject.Controllers
           
             List<Cars> cars = new List<Cars>();
             List<Cars> searchResult = new List<Cars>();
+            List<Cars> carTypes = new List<Cars>();
 
             try
             {
@@ -52,6 +53,27 @@ namespace carRentalProject.Controllers
                         });
                     }
                 }
+
+
+                // Fetch distinct car types
+                string typeQuery = "SELECT * FROM cars";
+                using (var cmd = new MySqlCommand(typeQuery, _connection))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        carTypes.Add(new Cars
+                        {
+                            Id = reader.GetInt32("id"),
+                            type = reader.GetString("type"),
+                            model = reader.GetString("model"),
+                            color = reader.GetString("color"),
+                            ImageUrl = reader.GetString("imageUrl"),
+                            location = reader.GetString("location")
+                        });
+                    }
+                }
+
 
                 // If search parameters are provided, filter the cars
                 if (!string.IsNullOrEmpty(location) || !string.IsNullOrEmpty(carType))
@@ -107,8 +129,57 @@ namespace carRentalProject.Controllers
             }
 
             // Pass both available cars and search results to the view
+            ViewBag.CarTypes = carTypes;
             ViewData["SearchResult"] = searchResult;
             return View(cars);
+        }
+
+
+        // POST: MemberDashboard/SubmitReview
+        [HttpPost]
+        public IActionResult SubmitReview(string Name, string Email, int carTypeId, string inquiryText)
+        {
+            try
+            {
+                // Retrieve member_id from session (Assuming it's stored in session)
+                var memberId = HttpContext.Session.GetInt32("UserId");
+
+                if (memberId == null)
+                {
+                    TempData["ErrorMessage"] = "You must be logged in to submit a review.";
+                    return RedirectToAction("Index");
+                }
+
+                // Open MySQL connection
+                _connection.Open();
+
+                // Insert query
+                string query = "INSERT INTO review (name, email, description, member_id, car_type_id) VALUES (@Name, @Email, @Description, @MemberId, @CarTypeId)";
+
+                using (var cmd = new MySqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("@Name", Name);
+                    cmd.Parameters.AddWithValue("@Email", Email);
+                    cmd.Parameters.AddWithValue("@Description", inquiryText);
+                    cmd.Parameters.AddWithValue("@MemberId", memberId);
+                    cmd.Parameters.AddWithValue("@CarTypeId", carTypeId);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                TempData["SuccessMessage"] = "Your review has been submitted successfully!";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error inserting review: {ex.Message}");
+                TempData["ErrorMessage"] = "Failed to submit your review. Please try again.";
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return RedirectToAction("Index","MemberDashboard");
         }
     }
 }

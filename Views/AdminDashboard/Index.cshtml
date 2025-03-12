@@ -77,7 +77,7 @@
 
         .link-btn {
             display: inline-block;
-            padding: 15px 20px;
+            padding: 8px 15px;
             font-size: 0.8rem;
             font-weight: bold;
             color: white;
@@ -107,7 +107,9 @@
         <a href="#">Home</a>
         <a href="#featuredSection">Available Cars</a>
         <a href="#searchSection">Search Cars</a>
-        <a href="#inquirySection">Submit Inquiry</a>
+        <a href="@Url.Action("Index", "Review")" >Reviews</a>
+        <a href="#inquirySection">Manage Inquiries</a>
+        
         <a href="@Url.Action("Logout", "Login")">Logout</a>
     </div>
 
@@ -143,6 +145,8 @@
                                 {
                                     <a href="@Url.Action("Index", "CarBooking", new { carId = car.Id })" class="link-btn">Book Now</a>
                                 }
+                              
+
 
                             </div>
                         </div>
