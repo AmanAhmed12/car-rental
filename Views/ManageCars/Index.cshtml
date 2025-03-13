@@ -1,0 +1,332 @@
+﻿@{
+    ViewData["Title"] = "Manage Cars";
+    var successMessage = TempData["SuccessMessage"] as string ?? "";
+    var errorMessage = TempData["ErrorMessage"] as string ?? "";
+    var CarDetailList = ViewBag.CarDetails as List<Cars> ?? new List<Cars>(); // Default to empty list if null
+
+    Layout = null;
+}
+
+@model Cars
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Car Rental</title>
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 200px;
+        }
+
+         h3 {
+            color:black;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table thead {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        .table-actions i {
+            cursor: pointer;
+            margin: 0 8px;
+            font-size: 18px;
+        }
+
+        .table-actions .edit {
+            color: #28a745;
+        }
+
+        .table-actions .delete {
+            color: #dc3545;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            width:85vw;
+            margin-left:7%;
+            margin-bottom:2%;
+        }
+
+        .form-control {
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+        }
+
+        .btn-back {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            border: none;
+            padding: 3px 8px;
+            margin: 10px;
+            font-size:0.8rem;
+            font-weight:bolder;
+        }
+
+            .btn-back:hover {
+                background: linear-gradient(45deg, #ff512f, #dd2476);
+            }
+
+        .modal-header {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            color: white;
+        }
+
+        .modal-title {
+            font-weight: bold;
+        }
+
+        .modal-body {
+            background-color: #f8f9fa;
+        }
+
+        .modal-footer {
+            background-color: #f1f1f1;
+        }
+
+        .reviewHead{
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            width:100%;
+        }
+        h1{
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff7e5f, #feb47b); /* Gradient background */
+            text-decoration: none;
+            border-radius: 10px; /* Rounded corners */
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            width: 100px;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+            .cta-button:hover {
+                color: black;
+                background: linear-gradient(45deg, #ff512f, #dd2476); /* Darker gradient on hover */
+                transform: translateY(-3px); /* Slight lift effect */
+                box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4); /* Stronger shadow on hover */
+            }
+    </style>
+</head>
+
+<body>
+    <div class="reviewHead d-flex justify-content-between align-items-center">
+        <!-- Back to Home Button (left corner) -->
+        <a href="@Url.Action("Index", "AdminDashboard")" class="btn btn-back">Dashboard</a>
+
+        <!-- Review Header (centered) -->
+        <h1 class="mx-auto">Manage Cars</h1>
+    </div>
+    <!-- Display success/error messages -->
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success">
+            @successMessage
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger">
+            @errorMessage
+        </div>
+    }
+
+    <div class="container">
+       
+
+      
+
+
+        <!-- Reviews Table -->
+        <div class="table-container">
+            <table id="carTable" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Model</th>
+                        <th>Color</th>
+                        <th>Location</th>
+                        <th>Is Booked</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var car in CarDetailList)
+                    {
+                        <tr>
+                            <td>@car.Id</td>
+                            <td>@car.type</td>
+                            <td>@car.model</td>
+                            <td>@car.color</td>
+                            <td>@car.location</td>
+                          <td>@(car.is_booked == 1 ? "Yes" : "No")</td>
+
+                            <td class="table-actions">
+                                <i class="fas fa-edit edit" data-bs-toggle="modal" data-bs-target="#editModal"
+                                   data-id="@car.Id" data-type="@car.type" data-model="@car.model"
+                                   data-color="@car.color" data-location="@car.location"
+                                   data-is-booked="@car.is_booked"></i>
+                                <i class="fas fa-trash delete" data-id="@car.Id"></i>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <!-- Edit Car Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Car</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" asp-action="UpdateCars">
+                        <input type="hidden" id="editCarId" name="Id" />
+                        <div class="mb-3">
+                            <label for="editCarType" class="form-label">Car Type</label>
+                            <input type="text" class="form-control" id="editCarType" name="Type" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarModel" class="form-label">Model</label>
+                            <input type="text" class="form-control" id="editCarModel" name="Model" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarColor" class="form-label">Color</label>
+                            <input type="text" class="form-control" id="editCarColor" name="Color" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarLocation" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="editCarLocation" name="Location" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCarBooked" class="form-label">Is Booked</label>
+                            <select class="form-select" id="editCarBooked" name="IsBooked" required>
+                                <option value=1>Yes</option>
+                                <option value=0>No</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="cta-button">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+            $('#editModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var carId = button.data('id');
+            var carType = button.data('type');
+            var carModel = button.data('model');
+            var carColor = button.data('color');
+            var carLocation = button.data('location');
+            var carIsBooked = button.data('is-booked'); // This will be 1 or 0
+
+            var modal = $(this);
+            modal.find('#editCarId').val(carId);
+            modal.find('#editCarType').val(carType);
+            modal.find('#editCarModel').val(carModel);
+            modal.find('#editCarColor').val(carColor);
+            modal.find('#editCarLocation').val(carLocation);
+            modal.find('#editCarBooked').val(carIsBooked);  // Pass the correct value (1 or 0)
+
+            // Manually set the selected attribute for the "Is Booked" dropdown
+            modal.find('#editCarBooked').val(carIsBooked); // This will automatically select the correct option (1 or 0)
+        });
+
+        // Delete Review
+                $('.delete').click(function () {
+            var reviewId = $(this).data('id');
+            if (confirm("Are you sure you want to delete this review?")) {
+                window.location.href = "@Url.Action("DeleteCars", "ManageCars")?id=" + reviewId;
+            }
+        });
+    </script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+             $('#carTable').DataTable({
+                "paging": true,
+                "pageLength": 10,  // Show 10 rows per page
+                "lengthChange": false, // Hide "Show entries" dropdown
+                "info": false, // Hide table information
+                "ordering": true, // Enable sorting
+                "searching": false
+            });
+
+            setTimeout(function () {
+                $(".alert").fadeOut("slow");
+            }, 5000); // 10 seconds (10000 milliseconds)
+        });
+    </script>
+
+</body>
+
+</html>

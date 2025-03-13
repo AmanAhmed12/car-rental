@@ -51,6 +51,12 @@
             .guest-login-button:active {
                 background-color: #004085;
             }
+            h3{
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            }
     </style>
 </head>
 <body class="bg-light">
@@ -90,7 +96,8 @@
                         </div>
                         <a href="#" class="text-muted">Forgot Password?</a>
                     </div>
-                    <button type="submit" class="login-button w-100">Login</button>
+                  
+                    <button type="submit" class="guest-login-button w-100">Login</button>
                 </form>
 
                 <a href="@Url.Action("Index", "GuestDashboard")">
