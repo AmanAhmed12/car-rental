@@ -155,7 +155,9 @@ namespace carRentalProject.Controllers
                 _connection.Close();
             }
 
-            return RedirectToAction("Index","AdminDashboard"); // Redirect back to the Index action to show updated car list
+          
+
+            return RedirectToAction("Index","RentedCars"); // Redirect back to the Index action to show updated car list
         }
 
 

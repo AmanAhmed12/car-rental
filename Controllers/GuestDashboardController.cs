@@ -51,5 +51,57 @@ namespace carRentalProject.Controllers
             ViewBag.CarTypes = cars; // Use ViewBag instead of ViewData
             return View(cars);
         }
+
+
+        [HttpPost]
+        public IActionResult SubmitInquiry(string FirstName, string LastName, string Email, string inquiryText)
+        {
+            try
+            {
+            
+
+                _connection.Open();
+              
+                {
+                    try
+                    {
+                        // Insert booking details into booking_details table
+                        string insertBookingQuery = "INSERT INTO inquiry (first_name, last_name, email,inquiry_desc) VALUES (@firstName, @lastName, @email, @inquiry)";
+                        using (var cmd = new MySqlCommand(insertBookingQuery, _connection))
+                        {
+                            cmd.Parameters.AddWithValue("@firstName", FirstName);
+                            cmd.Parameters.AddWithValue("@lastName", LastName);
+                            cmd.Parameters.AddWithValue("@email", Email);
+                            cmd.Parameters.AddWithValue("@inquiry", inquiryText);
+                           
+
+                            cmd.ExecuteNonQuery(); // Execute the insert query
+                        }
+
+                     
+
+
+                        TempData["SuccessMessage"] = "Submitted Inquiry successfully!";
+                    }
+                    catch (Exception ex)
+                    {
+                      
+                        _logger.LogError($"Error submitting inquiry: {ex.Message}");
+                        TempData["ErrorMessage"] = "Failed to submit inquiry.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error booking car: {ex.Message}");
+                TempData["ErrorMessage"] = "Failed to submit inquiry.";
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

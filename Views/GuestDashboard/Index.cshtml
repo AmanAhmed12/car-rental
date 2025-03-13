@@ -5,6 +5,8 @@
 @model List<Cars>
 
 @{
+    var successMessage = TempData["SuccessMessage"] as string ?? "";
+    var errorMessage = TempData["ErrorMessage"] as string ?? "";
     var carsList = Model ?? new List<Cars>();
     // var searchResult = ViewData["SearchResult"] as List<Cars> ?? new List<Cars>();
 }
@@ -120,6 +122,18 @@
             <h1 class="memberDashHead">Welcome to the Guest Dashboard</h1>
             <p>Explore cars, submit inquiries, and find the perfect car for your needs!</p>
         </div>
+        @if (!string.IsNullOrEmpty(successMessage))
+        {
+            <div class="alert alert-success" role="alert">
+                @successMessage
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
 
         <!-- Featured Cars Section -->
         <div id="featuredSection" class="container mt-5">
@@ -200,7 +214,22 @@
         <div id="inquirySection" class="container mt-5">
             <div class="card shadow-sm p-4">
                 <h4>Submit an Inquiry</h4>
-                <form action="/Inquiry/Submit" method="post">
+                <form asp-action="SubmitInquiry" method="post">
+                    <div class="form-group mb-1">
+                        <label for="FirstName">First Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="FirstName" name="FirstName" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="LastName">Last Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="LastName" name="LastName" required />
+                    </div>
+
+                    <div class="form-group mb-1">
+                        <label for="Email">Email <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="Email" name="Email" required />
+                    </div>
+                    <label for="inquiryText">Inquiry <span class="text-danger">*</span></label>
                     <textarea class="form-control mb-2" name="inquiryText" placeholder="Ask us anything about cars or services"></textarea>
                     <button type="submit" class="link-btn w-100">Submit Inquiry</button>
                 </form>
@@ -210,7 +239,16 @@
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () {
+                $(".alert").fadeOut("slow");
+            }, 5000); // 10 seconds (10000 milliseconds)
+        });
+    </script>
     <script>
         function toggleNav() {
             var sidebar = document.getElementById("mySidebar");
@@ -223,6 +261,7 @@
             }
         }
     </script>
+   
 </body>
 
 </html>
