@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <!-- External CSS -->
+
+    <style>
+        /* About Us Section */
+        .container {
+            max-width: 1400px;
+        }
+
+        .about-image img {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+            .about-image img:hover {
+                transform: scale(1.05);
+                box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            }
+
+        ul.list-unstyled li {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+            ul.list-unstyled li i {
+                margin-right: 10px;
+                font-size: 1.4rem;
+            }
+
+            i{
+                color:orange;
+            }
+            .head{
+                color:orangered;
+            }
+
+    </style>
+</head>
+
+<body>
+    <!-- About Us Section -->
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <!-- Left Section - Text -->
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4 head">About Us</h2>
+                <p class="lead">Welcome to <strong>Kandy Rentals</strong>, your trusted partner for seamless and hassle-free car rentals.</p>
+
+                <h4 class="fw-semibold mt-4 head">Who We Are</h4>
+                <p>We believe travel is more than just reaching a destination—it’s about the journey. Our fleet consists of everything from compact cars to luxury vehicles.</p>
+
+                <h4 class="fw-semibold  mt-4 head">Why Choose Us?</h4>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-car "></i> <strong>Wide Range of Vehicles:</strong> Economy, luxury, SUVs, and more.</li>
+                    <li><i class="fas fa-tags"></i> <strong>Competitive Prices:</strong> Best rates with high-quality service.</li>
+                    <li><i class="fas fa-mobile-alt "></i> <strong>Easy Booking:</strong> Book your ride in a few clicks.</li>
+                    <li><i class="fas fa-headset"></i> <strong>24/7 Support:</strong> We're here to assist you anytime.</li>
+                    <li><i class="fas fa-shield-alt "></i> <strong>Insurance & Safety:</strong> Comprehensive coverage for peace of mind.</li>
+                </ul>
+            </div>
+
+            <!-- Right Section - Image Grid -->
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="about-image">
+                            <img src="~/images/car1.jpg" alt="Car 1" class="img-fluid rounded shadow">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="about-image">
+                            <img src="~/images/car2.jpg" alt="Car 2" class="img-fluid rounded shadow">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="about-image">
+                            <img src="~/images/car3.jpg" alt="Car 3" class="img-fluid rounded shadow">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="about-image">
+                            <img src="~/images/car3.jpg" alt="Car 4" class="img-fluid rounded shadow">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
+</body>
+
+</html>
