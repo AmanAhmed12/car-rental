@@ -18,7 +18,7 @@ namespace carRentalProject.Controllers
         }
 
         // GET: CarBooking
-        public IActionResult Index()
+        public IActionResult Index(int? carId)
         {
             List<ReviewDetails> reviews = new List<ReviewDetails>();
             List<Cars> cars = new List<Cars>();
@@ -27,32 +27,39 @@ namespace carRentalProject.Controllers
             {
                 _connection.Open();
                 string query = @"
-            SELECT r.id, r.name, r.email, r.description, r.member_id, r.car_type_id, 
-                   c.type AS car_type, m.first_name AS member_name 
-            FROM review r
-            LEFT JOIN cars c ON r.car_type_id = c.id
-            LEFT JOIN registration m ON r.member_id = m.id";
+        SELECT r.id, r.name, r.email, r.description, r.member_id, r.car_type_id, 
+               c.type AS car_type, m.first_name AS member_name 
+        FROM review r
+        LEFT JOIN cars c ON r.car_type_id = c.id
+        LEFT JOIN registration m ON r.member_id = m.id
+        WHERE (@CarId IS NULL OR r.car_type_id = @CarId)";
+
                 using (var cmd = new MySqlCommand(query, _connection))
-                using (var reader = cmd.ExecuteReader())
                 {
-                    while (reader.Read())
+                    // Move the parameter assignment before ExecuteReader()
+                    cmd.Parameters.AddWithValue("@CarId", carId ?? (object)DBNull.Value);
+
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        reviews.Add(new ReviewDetails
+                        while (reader.Read())
                         {
-                            Id = reader.GetInt32("id"),
-                            Name = reader.GetString("name"),  // Assuming the name field is present in your query
-                            Email = reader.GetString("email"),  // Assuming the email field is present in your query
-                            Description = reader.GetString("description"),  // Assuming the description field is present in your query
-                            MemberId = reader.GetInt32("member_id"),  // Assuming the memberId field is present in your query
-                            CarTypeId = reader.GetInt32("car_type_id"),  // Assuming the carTypeId field is present in your query
-                             CarType = reader.IsDBNull(reader.GetOrdinal("car_type")) ? null : reader.GetString("car_type"),
-                            MemberName = reader.IsDBNull(reader.GetOrdinal("member_name")) ? null : reader.GetString("member_name")
-                        });
+                            reviews.Add(new ReviewDetails
+                            {
+                                Id = reader.GetInt32("id"),
+                                Name = reader.GetString("name"),
+                                Email = reader.GetString("email"),
+                                Description = reader.GetString("description"),
+                                MemberId = reader.GetInt32("member_id"),
+                                CarTypeId = reader.GetInt32("car_type_id"),
+                                CarType = reader.IsDBNull(reader.GetOrdinal("car_type")) ? null : reader.GetString("car_type"),
+                                MemberName = reader.IsDBNull(reader.GetOrdinal("member_name")) ? null : reader.GetString("member_name")
+                            });
+                        }
                     }
                 }
 
                 // Retrieve car types
-                string carTypeQuery = "SELECT * FROM cars"; // Assuming the car types are in a table named "car_types"
+                string carTypeQuery = "SELECT * FROM cars";
                 using (var cmd = new MySqlCommand(carTypeQuery, _connection))
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -76,10 +83,11 @@ namespace carRentalProject.Controllers
                 _connection.Close();
             }
 
-            ViewBag.ReviewDetails = reviews; // Use ViewBag instead of ViewData
-            ViewBag.CarTypes = cars; // Use ViewBag instead of ViewData
+            ViewBag.ReviewDetails = reviews;
+            ViewBag.CarTypes = cars;
             return View();
         }
+
 
         // POST: MemberDashboard/SubmitReview
         [HttpPost]

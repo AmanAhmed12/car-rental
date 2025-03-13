@@ -110,7 +110,7 @@
         <a href="#featuredSection">Available Cars</a>
         @* <a href="#searchSection">Search Cars</a> *@
         <a href="#inquirySection">Submit Inquiry</a>
-        <a href="@Url.Action("Index", "GuestReview")">View Reviews</a>
+        @*  <a href="@Url.Action("Index", "GuestReview")">View Reviews</a>*@
         <a href="@Url.Action("Logout", "Login")">Logout</a>
     </div>
 
@@ -152,6 +152,8 @@
                                     <p><strong>Model: @car.model</strong></p>
                                     <p><strong>Color: @car.color</strong></p>
                                     <p><strong>Location: @car.location</strong></p>
+                                    <a href="@Url.Action("Index", "GuestReview", new { carId = car.Id })" class="link-btn">View Reviews</a>
+
                                 </div>
                             </div>
                         </div>

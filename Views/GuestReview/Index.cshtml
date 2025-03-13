@@ -2,8 +2,7 @@
     ViewData["Title"] = "GuestReview";
     var successMessage = TempData["SuccessMessage"] as string ?? "";
     var errorMessage = TempData["ErrorMessage"] as string ?? "";
-    var ReviewDetails = ViewBag.ReviewDetails as List<ReviewDetails> ?? new List<ReviewDetails>(); // Default to empty list if null
-    var carTypes = ViewBag.CarTypes as List<Cars>; // Default to empty list if null
+    var ReviewDetails = ViewBag.ReviewDetails as List<ReviewDetails> ?? new List<ReviewDetails>();
     Layout = null;
 }
 
@@ -15,137 +14,144 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
 
     <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
         }
 
         .container {
-            margin-top: 150px;
-        }
-
-        h3 {
-            color: black;
-            font-weight: bold;
-            text-align: center;
-        }
-        h1{
-            font-family: 'Poppins', sans-serif;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .table-container {
-            margin-top: 30px;
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
         }
 
         .reviewHead {
             background: linear-gradient(45deg, #ff7e5f, #feb47b);
             width: 100vw;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto;
         }
 
         .btn-back {
             background: linear-gradient(45deg, #ff7e5f, #feb47b);
             border: none;
-            padding: 3px 8px;
-            margin: 10px;
+            padding: 5px 12px;
             font-size: 0.8rem;
             font-weight: bolder;
+            color: white;
+            border-radius: 5px;
         }
 
             .btn-back:hover {
                 background: linear-gradient(45deg, #ff512f, #dd2476);
+                color: black;
             }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .review-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px;
+            width: 30%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .review-card:hover {
+                transform: scale(1.05);
+                box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            .review-card h5 {
+                font-weight: bold;
+                color: #ff7e5f;
+            }
+
+            .review-card p {
+                color: #666;
+                font-size: 1rem;
+            }
+
+            .review-card .review-footer {
+                display: flex;
+                justify-content: space-between;
+                font-size: 0.9rem;
+                font-weight: bold;
+                color: #333;
+            }
+
+      
+
+        }
     </style>
 </head>
 
 <body>
-    <div class="reviewHead d-flex justify-content-between align-items-center">
-        <!-- Back to Home Button (left corner) -->
+    <div class="reviewHead">
         <a href="@Url.Action("Index", "GuestDashboard")" class="btn btn-back">Dashboard</a>
-        <h1 class="mx-auto">Reviews</h1>
+        <h1>Guest Reviews</h1>
     </div>
 
     <div class="container">
         <!-- Display success/error messages -->
         @if (!string.IsNullOrEmpty(successMessage))
         {
-            <div class="alert alert-success">@successMessage</div>
+            <div class="alert alert-success text-center">@successMessage</div>
         }
         @if (!string.IsNullOrEmpty(errorMessage))
         {
-            <div class="alert alert-danger">@errorMessage</div>
+            <div class="alert alert-danger text-center">@errorMessage</div>
         }
 
-        <!-- Reviews Table -->
-        <div class="table-container">
-            <table id="reviewTable" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Description</th>
-                        <th>Member</th>
-                        <th>Car Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var review in ReviewDetails)
-                    {
-                        <tr>
-                            <td>@review.Id</td>
-                            <td>@review.Name</td>
-                            <td>@review.Email</td>
-                            <td>@review.Description</td>
-                            <td>@review.MemberName</td>
-                            <td>@review.CarType</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <!-- Reviews Grid -->
+        <div class="card-container">
+            @foreach (var review in ReviewDetails)
+            {
+                <div class="review-card">
+                    <h5>@review.Name</h5>
+                    <p><i class="fas fa-envelope"></i> @review.Email</p>
+                    <p>@review.Description</p>
+                    <div class="review-footer">
+                        <span>👤 @review.MemberName</span>
+                        <span>🚗 @review.CarType</span>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <script>
         $(document).ready(function () {
-            // Initialize DataTable with pagination
-            $('#reviewTable').DataTable({
-                "paging": true,
-                "pageLength": 10,  // Show 10 rows per page
-                "lengthChange": false, // Hide "Show entries" dropdown
-                "info": false, // Hide table information
-                "ordering": true, // Enable sorting
-                "searching": false
-            });
-
             setTimeout(function () {
                 $(".alert").fadeOut("slow");
-            }, 5000); // Auto-hide success/error messages after 5 seconds
+            }, 5000);
         });
     </script>
 </body>
-
 
 </html>
