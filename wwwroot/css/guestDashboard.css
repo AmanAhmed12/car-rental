@@ -102,8 +102,9 @@
 
 /* Featured Cars Section */
 .card-img-top {
-    max-height: 250px;
+  
     object-fit: cover;
+    height:200px;
 }
 
 .memberDashHead {
