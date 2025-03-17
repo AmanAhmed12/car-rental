@@ -6,6 +6,7 @@
 @{
     var successMessage = TempData["SuccessMessage"] as string ?? "";
     var errorMessage = TempData["ErrorMessage"] as string ?? "";
+    var name = Context.Session.GetString("Name") ?? "";
 }
 
 @{
@@ -61,7 +62,7 @@
 
                         <div class="mb-3">
                             <label for="Name" class="form-label">Full Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="Name" name="Name" required>
+                            <input type="text" class="form-control" id="Name" name="Name" value="@name" disabled  required>
                         </div>
 
                         <div class="mb-3">

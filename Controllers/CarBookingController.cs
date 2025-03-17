@@ -61,6 +61,8 @@ namespace carRentalProject.Controllers
                 // Retrieve the user ID from session
                 int? userId = HttpContext.Session.GetInt32("UserId");
 
+                string? username= HttpContext.Session.GetString("Name");
+
                 if (userId == null)
                 {
                     TempData["ErrorMessage"] = "You must be logged in to book a car.";
@@ -76,7 +78,7 @@ namespace carRentalProject.Controllers
                         string insertBookingQuery = "INSERT INTO booking_details (name, address, tel, dateFrom, dateTo, car_id, member_id) VALUES (@name, @address, @phone, @fromDate, @toDate, @carId, @memberId)";
                         using (var cmd = new MySqlCommand(insertBookingQuery, _connection, transaction))
                         {
-                            cmd.Parameters.AddWithValue("@name", name);
+                            cmd.Parameters.AddWithValue("@name", username);
                             cmd.Parameters.AddWithValue("@address", address);
                             cmd.Parameters.AddWithValue("@phone", telId);
                             cmd.Parameters.AddWithValue("@fromDate", fromDate);

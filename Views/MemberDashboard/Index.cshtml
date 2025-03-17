@@ -141,6 +141,7 @@
                                 <p><strong>Color: @car.color</strong></p>
                                 <p><strong>Location: @car.location</strong></p>
                                 <a href="@Url.Action("Index", "CarBooking")" class="link-btn">Book Now</a>
+                                <a href="@Url.Action("Index", "GuestReview", new { carId = car.Id })" class="link-btn">View Reviews</a>
                             </div>
                         </div>
                     </div>

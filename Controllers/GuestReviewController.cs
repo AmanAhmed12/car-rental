@@ -89,6 +89,23 @@ namespace carRentalProject.Controllers
         }
 
 
+
+        // GET: CarBooking
+        public IActionResult Back()
+        {
+            var acsType = HttpContext.Session.GetString("AccountType");
+
+            if (acsType == "member")
+            {
+                return RedirectToAction("Index", "MemberDashboard");
+            }
+
+            return RedirectToAction("Index", "GuestDashboard");
+
+        }
+
+
+
         // POST: MemberDashboard/SubmitReview
         [HttpPost]
         public IActionResult SubmitReview(string Name, string Email, int carTypeId, string inquiryText)

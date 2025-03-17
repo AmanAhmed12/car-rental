@@ -35,7 +35,7 @@ namespace carRentalProject.Controllers
             try
             {
                 _connection.Open();
-                string query = "SELECT id,pwd, acc_type FROM registration WHERE email = @Email";
+                string query = "SELECT id,pwd, acc_type,first_name,last_name FROM registration WHERE email = @Email";
 
                 using (var cmd = new MySqlCommand(query, _connection))
                 {
@@ -47,6 +47,12 @@ namespace carRentalProject.Controllers
 
                             string hashedPassword = reader["pwd"].ToString();
                             string accountType = reader["acc_type"].ToString().ToLower(); // Normalize case
+
+                            string first_name = reader["first_name"].ToString();
+                            string last_name = reader["last_name"].ToString();
+                            string name = char.ToUpper(first_name[0]) + first_name.Substring(1).ToLower() + " " +
+               char.ToUpper(last_name[0]) + last_name.Substring(1).ToLower();
+
                             int userId = Convert.ToInt32(reader["id"]); // Get the user ID
 
                             var passwordHasher = new PasswordHasher<string>();
@@ -57,6 +63,7 @@ namespace carRentalProject.Controllers
 
                                 HttpContext.Session.SetInt32("UserId", userId);
                                 HttpContext.Session.SetString("AccountType", accountType);
+                                HttpContext.Session.SetString("Name", name);
                                 // Redirect based on account type
                                 if (accountType == "member")
                                 {
